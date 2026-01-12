@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Lock, LogIn, Eye, EyeOff, Facebook, Github, User, Phone, Building, ArrowLeft } from 'lucide-react';
 import logoIcon from '../../assets/icon.png';
-import Planet3D from '../Planet/Planet3D';
+
+// Lazy load del planeta 3D
+const Planet3D = lazy(() => import('../Planet/Planet3D'));
 
 const LoginImproved = ({ onLogin, initialMode = 'login', onBack }) => {
   const [isLogin, setIsLogin] = useState(initialMode === 'login');
@@ -362,7 +364,13 @@ const LoginImproved = ({ onLogin, initialMode = 'login', onBack }) => {
           transition={{ duration: 0.8 }}
           className="absolute inset-0 flex items-center justify-center"
         >
-          <Planet3D onExpertClick={() => {}} showExperts={false} />
+          <Suspense fallback={
+            <div className="w-full h-full flex items-center justify-center">
+              <div className="w-12 h-12 border-4 border-gray-200 border-t-gray-900 rounded-full animate-spin"></div>
+            </div>
+          }>
+            <Planet3D onExpertClick={() => {}} showExperts={false} />
+          </Suspense>
         </motion.div>
       </div>
     </div>

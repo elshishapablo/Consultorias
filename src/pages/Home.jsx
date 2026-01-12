@@ -8,7 +8,7 @@ import FavoritosList from '../components/Favoritos/FavoritosList';
 import Configuracion from '../components/Configuracion/Configuracion';
 import Taximeter from '../components/Taximeter/Taximeter';
 
-const Home = ({ user }) => {
+const Home = ({ user, onLogout }) => {
   const [selectedExpert, setSelectedExpert] = useState(null);
   const [isCallActive, setIsCallActive] = useState(false);
   const [activeView, setActiveView] = useState('dashboard'); // dashboard, consultas, historial, perfil, favoritos, settings
@@ -47,7 +47,7 @@ const Home = ({ user }) => {
 
       {/* Navbar - Right Sidebar */}
       <div className="fixed right-0 top-0 bottom-0 z-50">
-        <Navbar activeView={activeView} onViewChange={setActiveView} />
+        <Navbar activeView={activeView} onViewChange={setActiveView} onLogout={onLogout} />
       </div>
       
       {/* Taximeter Modal */}

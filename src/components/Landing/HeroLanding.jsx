@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion';
-import Planet3D from '../Planet/Planet3D';
+import { lazy, Suspense } from 'react';
+
+// Lazy load del planeta 3D que es pesado
+const Planet3D = lazy(() => import('../Planet/Planet3D'));
 
 const HeroLanding = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-white">
-      <div className="container mx-auto px-4 py-8">
+    <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden bg-white">
+      <div className="container mx-auto px-4 py-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left: Text Content */}
           <motion.div
@@ -44,9 +47,15 @@ const HeroLanding = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative h-[500px] lg:h-[600px]"
+            className="relative h-[500px] lg:h-[600px] bg-white"
           >
-            <Planet3D onExpertClick={() => {}} showExperts={true} />
+            <Suspense fallback={
+              <div className="w-full h-full flex items-center justify-center">
+                <div className="w-12 h-12 border-4 border-gray-200 border-t-gray-900 rounded-full animate-spin"></div>
+              </div>
+            }>
+              <Planet3D onExpertClick={() => {}} showExperts={true} />
+            </Suspense>
           </motion.div>
         </div>
       </div>

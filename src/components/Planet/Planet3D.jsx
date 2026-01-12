@@ -143,9 +143,16 @@ const Planet3D = memo(({ onExpertClick, showExperts = true }) => {
 
       // 4. Cargar puntos geográficos que formen la forma de países y continentes
       const loadGlobePoints = () => {
-        // Intentar cargar desde URL externa (como en el ejemplo)
-        fetch('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-dashboard-pro/assets/js/points.json')
+        // Usar AbortController para timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 segundos timeout
+
+        fetch('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-dashboard-pro/assets/js/points.json', {
+          signal: controller.signal,
+          cache: 'force-cache' // Usar caché del navegador
+        })
           .then((response) => {
+            clearTimeout(timeoutId);
             if (!response.ok) throw new Error('Network response was not ok');
             return response.json();
           })
@@ -154,7 +161,12 @@ const Planet3D = memo(({ onExpertClick, showExperts = true }) => {
             makeGlobeWithPoints(data.points || []);
           })
           .catch((error) => {
-            console.warn('No se pudieron cargar los puntos desde la URL, usando datos locales:', error);
+            clearTimeout(timeoutId);
+            if (error.name === 'AbortError') {
+              console.warn('Timeout al cargar puntos, usando datos locales');
+            } else {
+              console.warn('No se pudieron cargar los puntos desde la URL, usando datos locales:', error);
+            }
             // Fallback: usar puntos aproximados de continentes
             const fallbackPoints = generateContinentPoints();
             console.log('Usando puntos locales:', fallbackPoints.length);
@@ -334,9 +346,18 @@ const Planet3D = memo(({ onExpertClick, showExperts = true }) => {
         };
         window.addEventListener('resize', handleResize);
 
-        // 9. Animation loop
-        const animate = () => {
+        // 9. Animation loop optimizado
+        let lastTime = 0;
+        const targetFPS = 60;
+        const frameInterval = 1000 / targetFPS;
+
+        const animate = (currentTime) => {
           animationFrameRef.current = requestAnimationFrame(animate);
+
+          // Throttle a 60 FPS para mejor rendimiento
+          const deltaTime = currentTime - lastTime;
+          if (deltaTime < frameInterval) return;
+          lastTime = currentTime - (deltaTime % frameInterval);
 
           // OrbitControls.autoRotate está habilitado, así que controls.update()
           // debe ser llamado dentro del loop de animación
@@ -349,7 +370,7 @@ const Planet3D = memo(({ onExpertClick, showExperts = true }) => {
           }
         };
 
-        animate();
+        animate(0);
       };
 
       // Iniciar carga de puntos

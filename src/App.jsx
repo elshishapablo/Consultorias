@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import LoginImproved from './components/Login/LoginImproved';
 import Home from './pages/Home';
-import Landing from './pages/Landing';
+
+// Lazy load de componentes pesados
+const Landing = lazy(() => import('./pages/Landing'));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -27,9 +29,14 @@ function App() {
     setShowLogin(false);
   };
 
+  const handleLogout = () => {
+    setUser(null);
+    setShowLogin(false);
+  };
+
   // Si hay usuario, mostrar Home
   if (user) {
-    return <Home user={user} />;
+    return <Home user={user} onLogout={handleLogout} />;
   }
 
   // Si se hace clic en Login/Registrarse, mostrar Login
@@ -39,10 +46,19 @@ function App() {
 
   // Por defecto, mostrar Landing
   return (
-    <Landing 
-      onLoginClick={handleLoginClick} 
-      onRegisterClick={handleRegisterClick} 
-    />
+    <Suspense fallback={
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-gray-200 border-t-gray-900 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Cargando...</p>
+        </div>
+      </div>
+    }>
+      <Landing 
+        onLoginClick={handleLoginClick} 
+        onRegisterClick={handleRegisterClick} 
+      />
+    </Suspense>
   );
 }
 
