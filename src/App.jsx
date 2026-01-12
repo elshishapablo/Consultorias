@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import Login from './components/Login/Login';
+import LoginImproved from './components/Login/LoginImproved';
 import Home from './pages/Home';
 import Landing from './pages/Landing';
 
 function App() {
   const [user, setUser] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
+  const [loginMode, setLoginMode] = useState('login'); // 'login' o 'register'
 
   const handleLogin = (userData) => {
     setUser({ ...userData, balance: 50.0 }); // Mock balance
@@ -13,11 +14,17 @@ function App() {
   };
 
   const handleLoginClick = () => {
+    setLoginMode('login');
     setShowLogin(true);
   };
 
   const handleRegisterClick = () => {
+    setLoginMode('register');
     setShowLogin(true);
+  };
+
+  const handleBackToLanding = () => {
+    setShowLogin(false);
   };
 
   // Si hay usuario, mostrar Home
@@ -27,7 +34,7 @@ function App() {
 
   // Si se hace clic en Login/Registrarse, mostrar Login
   if (showLogin) {
-    return <Login onLogin={handleLogin} />;
+    return <LoginImproved onLogin={handleLogin} initialMode={loginMode} onBack={handleBackToLanding} />;
   }
 
   // Por defecto, mostrar Landing
