@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import NavbarLanding from '../components/Landing/NavbarLanding';
 import HeroLanding from '../components/Landing/HeroLanding';
 
@@ -23,6 +23,10 @@ const LazySection = ({ children }) => (
 );
 
 const Landing = ({ onLoginClick, onRegisterClick }) => {
+  // Scroll al top cuando se monta el componente
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="min-h-screen bg-white">
       <NavbarLanding onLoginClick={onLoginClick} onRegisterClick={onRegisterClick} />

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import ConsultasList from '../components/Consultas/ConsultasList';
 import UserDashboard from '../components/Dashboard/UserDashboard';
@@ -9,9 +9,13 @@ import Configuracion from '../components/Configuracion/Configuracion';
 import Taximeter from '../components/Taximeter/Taximeter';
 
 const Home = ({ user, onLogout }) => {
+  // Scroll al top cuando se monta el componente
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [selectedExpert, setSelectedExpert] = useState(null);
   const [isCallActive, setIsCallActive] = useState(false);
-  const [activeView, setActiveView] = useState('dashboard'); // dashboard, consultas, historial, perfil, favoritos, settings
+  const [activeView, setActiveView] = useState('dashboard'); 
 
   const handleEndCall = (callData) => {
     console.log('Llamada finalizada:', callData);

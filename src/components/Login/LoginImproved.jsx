@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from 'react';
+import { useState, lazy, Suspense, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Lock, LogIn, Eye, EyeOff, Facebook, Github, User, Phone, Building, ArrowLeft } from 'lucide-react';
 import logoIcon from '../../assets/icon.png';
@@ -7,6 +7,10 @@ import logoIcon from '../../assets/icon.png';
 const Planet3D = lazy(() => import('../Planet/Planet3D'));
 
 const LoginImproved = ({ onLogin, initialMode = 'login', onBack }) => {
+  // Scroll al top cuando se monta el componente
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [isLogin, setIsLogin] = useState(initialMode === 'login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

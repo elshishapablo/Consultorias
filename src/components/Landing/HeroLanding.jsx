@@ -6,15 +6,15 @@ const Planet3D = lazy(() => import('../Planet/Planet3D'));
 
 const HeroLanding = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden bg-white">
-      <div className="container mx-auto px-4 py-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <section className="relative min-h-screen flex items-start justify-center pt-8 overflow-hidden bg-white">
+      <div className="container mx-auto px-4 pt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Left: Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-6"
+            className="space-y-6 pt-20"
           >
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
               Soluciones Técnicas
@@ -47,7 +47,7 @@ const HeroLanding = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative h-[500px] lg:h-[600px] bg-white"
+            className="relative h-[500px] lg:h-[600px] bg-white -mt-4"
           >
             <Suspense fallback={
               <div className="w-full h-full flex items-center justify-center">

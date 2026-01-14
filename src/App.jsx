@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from 'react';
+import { useState, lazy, Suspense, useEffect } from 'react';
 import LoginImproved from './components/Login/LoginImproved';
 import Home from './pages/Home';
 
@@ -9,6 +9,11 @@ function App() {
   const [user, setUser] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
   const [loginMode, setLoginMode] = useState('login'); // 'login' o 'register'
+
+  // Scroll al top cuando cambia la página (showLogin cambia)
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [showLogin]);
 
   const handleLogin = (userData) => {
     setUser({ ...userData, balance: 50.0 }); // Mock balance
